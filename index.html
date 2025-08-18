@@ -1,92 +1,36 @@
-<!-- index.html
-     Purpose: Landing page where student selects academic year and navigates to the lessons catalog.
-     (الهدف: صفحة البداية لاختيار السنة الدراسية والانتقال لفهرس الدروس)
--->
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MED-Portal-NUB — Clinical learning, neatly organized</title>
-  <!-- Cairo font for Arabic/English readability (supports Arabic glyphs). -->
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MED Portal - NUB</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="app-root">
-  <header class="site-header">
-    <div class="container header-inner">
-      <div class="brand">
-        <img src="assets/img/logo.png" alt="NUB Med Portal logo" class="logo" />
-        <div class="brand-text">
-          <h1>MED-Portal-NUB</h1>
-          <p class="tagline">Clinical learning, neatly organized. (تعليم سريري منظم)</p>
-        </div>
-      </div>
-
-      <nav class="top-nav" aria-label="Main navigation">
-        <a href="index.html" class="nav-link">Home</a>
-        <a href="lessons-list.html" class="nav-link">Catalog</a>
-        <a href="ai-tutor.html" class="nav-link">AI Tutor</a>
-        <a href="README.md" class="nav-link">Developer Guide</a>
-      </nav>
-    </div>
-  </header>
-
-  <main class="container main-content">
-    <section class="hero-card">
-      <h2>Welcome, clinical student. (مرحباً بك أيها الطالب السريري)</h2>
-      <p>
-        Choose your academic year to explore curated lessons and interactive quizzes.
-        (اختر سنتك الدراسية لاستكشاف الدروس والاختبارات التفاعلية)
-      </p>
-      <div id="year-cards" class="year-grid" aria-live="polite">
-        <!-- JS will inject year cards -->
-      </div>
-    </section>
-
-    <section class="how-it-works">
-      <h3>How it works (Summary)</h3>
-      <ol>
-        <li>Pick Year → Pick Specialty → Open Lesson. (اختر السنة والتخصص وافتح الدرس)</li>
-        <li>Read the lesson, take quizzes, practice flashcards. (اقرأ، اجب، راجع الفلاش كاردز)</li>
-        <li>Use AI Tutor for explanations using the lesson context. (استخدم المساعد الذكي لشرح المحتوى)</li>
-      </ol>
-    </section>
-  </main>
-
-  <footer class="site-footer">
+<body>
     <div class="container">
-      <p>© 2025 MED-Portal-NUB • Built for clinical learners. (صُنع لطلاب الطب السريري)</p>
-      <p>
-        Hosted on GitHub Pages. (مستضاف على GitHub Pages) ·
-        Repo: <a href="https://github.com/abdallah-7amza/MED-Portal-NUB" target="_blank" rel="noopener">abdallah-7amza/MED-Portal-NUB</a>
-      </p>
+        <header class="header">
+            <h1>MED Portal</h1>
+            <p>Nahda University Medical Education Platform</p>
+        </header>
+        <main class="main-content">
+            <h2>Select Your Academic Year</h2>
+            <div class="year-cards">
+                <div class="year-card" data-year="1">
+                    <h3>First Year</h3>
+                </div>
+                <div class="year-card" data-year="2">
+                    <h3>Second Year</h3>
+                </div>
+                <div class="year-card" data-year="3">
+                    <h3>Third Year</h3>
+                </div>
+                <div class="year-card" data-year="5">
+                    <h3>Fifth Year</h3>
+                </div>
+            </div>
+        </main>
     </div>
-  </footer>
-
-  <script src="js/app.js"></script>
-  <script>
-    // index bootstrap: populate year cards
-    (function () {
-      const years = [
-        { label: "First Year", value: 1 },
-        { label: "Second Year", value: 2 },
-        { label: "Third Year", value: 3 },
-        { label: "Fifth Year", value: 5 }
-      ];
-      const container = document.getElementById('year-cards');
-      years.forEach(y => {
-        const card = document.createElement('button');
-        card.className = 'year-card';
-        card.innerHTML = `<strong>${y.label}</strong><span class="card-sub">Clinical rotations & lectures</span>`;
-        card.addEventListener('click', () => {
-          // save last chosen year and navigate
-          localStorage.setItem('mpn:lastYear', String(y.value));
-          window.location.href = `lessons-list.html?year=${y.value}`;
-        });
-        container.appendChild(card);
-      });
-    })();
-  </script>
+    <script src="js/app.js"></script>
 </body>
 </html>
