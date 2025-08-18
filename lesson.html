@@ -1,0 +1,110 @@
+<!-- lesson.html
+     Purpose: Render a single lesson (Markdown) and its quiz; includes AI Tutor FAB and chat overlay.
+     (الهدف: عرض درس واحد بالـ Markdown مع الاختبار ومساعد ذكي عائم)
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lesson — MED-Portal-NUB</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="app-root">
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <img src="assets/img/logo.png" alt="logo" class="logo">
+        <div class="brand-text">
+          <h1>MED-Portal-NUB</h1>
+          <p class="tagline">Lesson Viewer</p>
+        </div>
+      </div>
+      <nav class="top-nav" aria-label="Main navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="lessons-list.html" class="nav-link">Catalog</a>
+        <a href="ai-tutor.html" class="nav-link">AI Tutor</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container main-content">
+    <div id="breadcrumbs" class="breadcrumbs"></div>
+
+    <article class="lesson-article" id="lesson-article" aria-live="polite">
+      <!-- Title & meta -->
+      <div id="lesson-meta" class="lesson-meta"></div>
+      <div id="lesson-content" class="lesson-content">Loading lesson... (جارِ تحميل الدرس)</div>
+    </article>
+
+    <aside class="quiz-panel" id="quiz-panel">
+      <h3>Test Yourself (اختبر نفسك)</h3>
+      <div id="quiz-container">Loading quiz... (جارِ تحميل الاختبار)</div>
+    </aside>
+  </main>
+
+  <!-- AI Tutor Floating Button -->
+  <button id="ai-tutor-fab" class="ai-fab" aria-label="AI Tutor">
+    🤖
+  </button>
+
+  <!-- Chat Overlay -->
+  <div id="chat-overlay" class="chat-overlay" aria-hidden="true">
+    <div id="chat-window" class="chat-window" role="dialog" aria-modal="true">
+      <div class="chat-header">
+        <h3>AI Tutor</h3>
+        <div class="chat-controls">
+          <button id="reset-ai-key" class="btn small">Reset Key</button>
+          <button id="close-chat-btn" class="btn small">Close</button>
+        </div>
+      </div>
+      <div id="chat-messages" class="chat-messages"></div>
+      <form id="chat-input-form" class="chat-input-form" aria-label="Chat input">
+        <input id="chat-input" autocomplete="off" placeholder="Ask a question about this lesson..." />
+        <button id="chat-send-btn" class="btn circle" type="submit">➤</button>
+      </form>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container"><p>© 2025 MED-Portal-NUB</p></div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script src="js/github.js"></script>
+  <script src="js/lesson.js"></script>
+  <script src="js/ai.js"></script>
+  <script>
+    (async function initPage() {
+      const params = new URLSearchParams(location.search);
+      const year = params.get('year') || localStorage.getItem('mpn:lastYear') || '5';
+      const specialty = params.get('specialty');
+      const lesson = params.get('lesson');
+
+      // breadcrumbs
+      const bc = document.getElementById('breadcrumbs');
+      bc.innerHTML = `<a href="index.html">Home</a> › <a href="lessons-list.html?year=${year}">Year ${year}</a> ${specialty ? '› ' + specialty : ''} ${lesson ? '› ' + lesson : ''}`;
+
+      if (!specialty || !lesson) {
+        document.getElementById('lesson-content').innerHTML = '<div class="error">Lesson parameters missing. (المعطيات مفقودة)</div>';
+        return;
+      }
+
+      // load lesson content (Markdown)
+      const md = await github.getLessonContent(year, specialty, lesson);
+      if (!md) {
+        document.getElementById('lesson-content').innerHTML = `<div class="error">Lesson not found. (الدرس غير موجود)</div>`;
+        return;
+      }
+      // render
+      lessonRenderer.renderMarkdownTo('#lesson-content', md, { titleSelector: '#lesson-meta' });
+
+      // load quiz JSON; if exists, render below
+      const quiz = await github.getQuiz(year, specialty, lesson);
+      lessonRenderer.renderQuiz('#quiz-container', quiz);
+    })();
+  </script>
+</body>
+</html>
