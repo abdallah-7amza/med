@@ -1,0 +1,29 @@
+{
+  "title": "Neonatal Jaundice — Quick MCQs",
+  "items": [
+    {
+      "id": "q1",
+      "stem": "What is the main mechanism of physiologic jaundice in neonates?",
+      "options": [
+        "Reduced hepatic conjugation (immature UDP-glucuronyl transferase)",
+        "Increased intestinal absorption of bilirubin",
+        "Autoimmune hemolysis",
+        "Biliary atresia"
+      ],
+      "answerIndex": 0,
+      "explanation": "Physiologic neonatal jaundice results from immaturity of hepatic conjugation enzymes (UDP-glucuronyl transferase)."
+    },
+    {
+      "id": "q2",
+      "stem": "A term newborn with yellowing at 24 hours: what must be considered?",
+      "options": [
+        "Physiologic jaundice",
+        "Pathologic jaundice (hemolysis or infection)",
+        "Normal variant if mild",
+        "All of the above"
+      ],
+      "answerIndex": 3,
+      "explanation": "Any early jaundice should raise concerns for pathologic causes; but mild physiologic jaundice can be normal. Consider all possibilities."
+    }
+  ]
+}
