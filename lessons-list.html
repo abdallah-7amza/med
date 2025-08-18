@@ -1,0 +1,105 @@
+<!-- lessons-list.html
+     Purpose: Displays specialties and lessons for a chosen year. (عرض التخصصات والدروس للسنة المختارة)
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MED-Portal-NUB — Lessons Catalog</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="app-root">
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <img src="assets/img/logo.png" alt="logo" class="logo">
+        <div class="brand-text">
+          <h1>MED-Portal-NUB</h1>
+          <p class="tagline">Lessons Catalog (فهرس الدروس)</p>
+        </div>
+      </div>
+      <nav class="top-nav" aria-label="Main navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="lessons-list.html" class="nav-link">Catalog</a>
+        <a href="ai-tutor.html" class="nav-link">AI Tutor</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container main-content">
+    <div class="breadcrumbs" id="breadcrumbs"></div>
+    <section id="specialties-section" class="card-grid">
+      <h2>Specialties</h2>
+      <div id="specialties" class="grid"></div>
+    </section>
+
+    <section id="lessons-section" style="display:none;">
+      <h2 id="lessons-title">Lessons</h2>
+      <div id="lessons" class="grid"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 MED-Portal-NUB</p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script src="js/github.js"></script>
+  <script>
+    // Page logic: read year param and load specialties
+    (async function () {
+      const qs = new URLSearchParams(location.search);
+      const year = qs.get('year') || localStorage.getItem('mpn:lastYear') || '5';
+      // show breadcrumbs
+      const breadcrumbs = document.getElementById('breadcrumbs');
+      breadcrumbs.innerHTML = `<a href="index.html">Home</a> › Year ${year}`;
+      // specialties list (could be dynamic per year)
+      const specialties = ['pediatrics','gynecology','obstetrics','family-medicine','public-health','psychiatry','emergency-medicine'];
+      const specContainer = document.getElementById('specialties');
+      specialties.forEach(s => {
+        const card = document.createElement('button');
+        card.className = 'specialty-card';
+        card.innerHTML = `<strong>${toTitleCase(s)}</strong><span class="card-sub">Explore lessons</span>`;
+        card.addEventListener('click', async () => {
+          // fetch lessons via github.js
+          document.getElementById('specialties-section').style.display = 'none';
+          document.getElementById('lessons-section').style.display = 'block';
+          document.getElementById('lessons-title').textContent = `${toTitleCase(s)} — Year ${year}`;
+          const lessonsList = await github.listLessons(String(year), s);
+          renderLessons(lessonsList || []);
+        });
+        specContainer.appendChild(card);
+      });
+
+      function toTitleCase(slug) {
+        return slug.split('-').map(w => w[0].toUpperCase()+w.slice(1)).join(' ');
+      }
+
+      function renderLessons(lessons) {
+        const container = document.getElementById('lessons');
+        container.innerHTML = '';
+        if (!lessons || lessons.length === 0) {
+          container.innerHTML = `<div class="empty">No lessons found for this specialty. (لا توجد دروس)</div>`;
+          return;
+        }
+        lessons.forEach(l => {
+          const el = document.createElement('div');
+          el.className = 'lesson-card';
+          el.innerHTML = `<h3>${l.title}</h3><p class="snippet">${l.snippet || ''}</p><div class="card-actions"><button class="btn" onclick="openLesson('${l.slug}','${l.specialty}')">Open Lesson</button></div>`;
+          container.appendChild(el);
+        });
+      }
+
+      window.openLesson = function (slug, specialty) {
+        // navigate to lesson page
+        const target = `lesson.html?year=${year}&specialty=${specialty}&lesson=${slug}`;
+        window.location.href = target;
+      };
+    })();
+  </script>
+</body>
+</html>
