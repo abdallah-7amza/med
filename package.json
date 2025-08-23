@@ -4,8 +4,7 @@
   "description": "Automated medical learning platform",
   "main": "index.js",
   "scripts": {
-    "generate-index": "node tools/generateIndex.js"
-  },
+"generate-index": "node ./tools/generateIndex.js"  },
   "keywords": [],
   "author": "Abdallah Hamza",
   "license": "ISC",
