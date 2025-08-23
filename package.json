@@ -1,0 +1,16 @@
+{
+  "name": "med-portal-nub",
+  "version": "1.0.0",
+  "description": "Automated medical learning platform",
+  "main": "index.js",
+  "scripts": {
+    "generate-index": "node tools/generateIndex.js"
+  },
+  "keywords": [],
+  "author": "Abdallah Hamza",
+  "license": "ISC",
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "lunr": "^2.3.9"
+  }
+}
