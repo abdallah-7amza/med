@@ -1,0 +1,44 @@
+# .github/workflows/generate-index.yml
+
+name: Generate Content Index
+
+# هذا يحدد متى سيعمل المساعد: عند أي عملية رفع لفرع main
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-index:
+    # هذا يعطي المساعد صلاحية الكتابة على الملفات في المستودع
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      # الخطوة 1: يقوم بتحميل نسخة من المستودع
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # الخطوة 2: يقوم بتجهيز بيئة Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      # الخطوة 3: يقوم بتثبيت الأدوات المطلوبة تلقائيًا
+      - name: Install dependencies
+        run: npm install
+
+      # الخطوة 4: يقوم بتشغيل سكريبت الفهرسة
+      - name: Generate content index
+        run: npm run generate-index
+
+      # الخطوة 5: يقوم بحفظ الملفات المحدثة في المستودع
+      - name: Commit and push changes
+        if: github.ref == 'refs/heads/main'
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "docs(content): Auto-generate content index"
+          file_pattern: "lessons-index.json search-index.json"
+          commit_user_name: "GitHub Actions Bot"
+          commit_user_email: "actions@github.com"
