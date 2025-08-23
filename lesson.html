@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Lesson - MED Portal</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+  <header class="main-header">
+    <a id="back-link-lesson" href="#" class="btn btn-secondary">&larr; Back</a>
+    <div class="header-content">
+      <h1 id="page-title">Loading Lesson...</h1>
+    </div>
+  </header>
+
+  <main class="container">
+    <article id="lesson-content"></article>
+
+    <section id="quiz-container" style="display:none; margin-top: 3rem;">
+        <h2>Test Yourself</h2>
+        <div class="quiz-header">
+            <div id="quiz-score" class="quiz-score">Score: 0 / 0</div>
+            <div id="quiz-progress-bar"><div id="quiz-progress-value"></div></div>
+            <button id="quiz-reset-btn" class="btn-secondary" style="display: none;">Reset Progress</button>
+        </div>
+        <div id="quiz-content"></div>
+    </section>
+  </main>
+
+  <footer class="main-footer">
+    <p>Powered by Abdallah Hamza</p>
+  </footer>
+
+  <button id="ai-tutor-fab" aria-label="Open AI Tutor">AI</button>
+  <div id="chat-overlay" class="visible" style="display: none;">
+    <div id="chat-window">
+      <div class="chat-header">
+        <h3>AI Medical Tutor</h3>
+        <button id="close-chat-btn">&times;</button>
+      </div>
+      <div id="chat-messages"></div>
+      <div class="quick-prompts" id="quick-prompts">
+        <button data-prompt="Summarize this lesson.">Summarize</button>
+        <button data-prompt="Give me 3 MCQs.">Make Quiz</button>
+      </div>
+      <form id="chat-input-form" autocomplete="off">
+        <input type="text" id="chat-input" placeholder="Ask about this lesson..." />
+        <button id="chat-send-btn" type="submit">Send</button>
+      </form>
+    </div>
+  </div>
+  <div id="key-modal" style="display: none;">
+    <div class="key-card">
+      <h3>Set up Gemini API Key</h3>
+      <input id="api-key-input" type="password" placeholder="AIza..." />
+      <button id="save-key-btn">Save</button>
+      <button id="cancel-key-btn">Cancel</button>
+    </div>
+  </div>
+
+  <script type="module" src="js/lesson.js"></script>
+  <script type="module">
+    import { initAITutor } from './js/ai-tutor.js';
+    function getLessonContext() {
+      return {
+        title: document.getElementById('page-title')?.textContent || '',
+        content: document.getElementById('lesson-content')?.innerText || ''
+      };
+    }
+    initAITutor({ getLessonContext });
+  </script>
+</body>
+</html>
