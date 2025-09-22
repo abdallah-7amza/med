@@ -1,15 +1,11 @@
 {
-  "name": "med-portal-nub",
+  "name": "med-portal-indexer",
   "version": "1.0.0",
-  "description": "Automated medical learning platform",
-  "main": "index.js",
-  "scripts": {
-"generate-index": "node ./tools/generateIndex.js"  },
-  "keywords": [],
-  "author": "Abdallah Hamza",
-  "license": "ISC",
+  "type": "module",
   "dependencies": {
-    "gray-matter": "^4.0.3",
-    "lunr": "^2.3.9"
+    "gray-matter": "^4.0.3"
+  },
+  "scripts": {
+    "build": "node generateIndex.js"
   }
 }
